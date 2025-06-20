@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Edit Post</title></head>
+<body>
+<h1>Edit Post</h1>
+<form method="post">
+  {% csrf_token %}
+  <input name="title" value="{{ post.title }}" required><br><br>
+  <textarea name="content" required>{{ post.content }}</textarea><br><br>
+  <button type="submit">Save</button>
+</form>
+</body>
+</html>
