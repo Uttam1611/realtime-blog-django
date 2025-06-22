@@ -16,7 +16,7 @@ A **fully-featured real-time blog platform** built with [Django](https://www.dja
 ## 🛠️ Technologies Used
 - **Backend** — Python 3.x, Django 5.x
 - **Real-Time Backend** — Django Channels + Redis
-- **Database** — SQLite (default), switchable to Postgres/MySQL
+- **Database** — PostgreSQL
 - **Frontend** — HTML5, CSS3, Bootstrap
 - **Testing** — Django's built-in test framework
 - **Version Control** — Git
