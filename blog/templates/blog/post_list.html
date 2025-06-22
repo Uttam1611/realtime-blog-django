@@ -20,17 +20,19 @@
 
 <hr>
 
-<!-- ⚡ Added id="post-list" -->
 <ul id="post-list">
   {% for post in posts %}
-    <li>
+    <li id="post-{{ post.id }}">
       <h3>{{ post.title }}</h3>
       <p>{{ post.content }}</p>
       <small>by {{ post.author.username }} on {{ post.created_at }}</small><br>
 
       {% if post.author == request.user or request.user.is_staff %}
         <a href="/edit/{{ post.id }}/">Edit</a> |
-        <a href="/delete/{{ post.id }}/">Delete</a>
+        <form action="/delete/{{ post.id }}/" method="post" style="display:inline;" onsubmit="return confirm('Delete this post?');">
+          {% csrf_token %}
+          <button type="submit" style="background:none;border:none;color:red;cursor:pointer;">Delete</button>
+        </form>
       {% endif %}
     </li>
   {% empty %}
@@ -45,13 +47,19 @@ socket.onmessage = function(e) {
     let data = JSON.parse(e.data).post;
     let postList = document.getElementById('post-list');
 
-    let newPost = document.createElement('li');
-    newPost.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.content}</p>
-      <small>by ${data.author} on ${data.created_at}</small>
-    `;
-    postList.prepend(newPost);  
+    if (data.action === "deleted") {
+        let postItem = document.getElementById(`post-${data.id}`);
+        if (postItem) postItem.remove();
+    } else {
+        let newPost = document.createElement('li');
+        newPost.id = `post-${data.id}`;
+        newPost.innerHTML = `
+          <h3>${data.title}</h3>
+          <p>${data.content}</p>
+          <small>by ${data.author} on ${data.created_at}</small>
+        `;
+        postList.prepend(newPost);  
+    }
 };
 </script>
 </body>
